@@ -57,7 +57,6 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
-            sudo docker pull ${{ secrets.DOCKER_USER }}/yamdb_final
             sudo docker-compose stop
             sudo docker-compose rm web
             touch .env
@@ -68,9 +67,6 @@ jobs:
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             sudo docker-compose up -d
-            sudo docker-compose exec -T web python manage.py collectstatic --noinput
-            sudo docker image prune -a -f
-
 
   send_message:
     runs-on: ubuntu-latest
