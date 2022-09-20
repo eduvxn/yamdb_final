@@ -62,14 +62,57 @@
 
 *Для работы с проектом в системе должен быть установлен Python версии 3.7*
 
-### Клонировать репозиторий и перейти в него в командной строке:
+### Клонировать репозиторий:
 
 ```
-git clone https://github.com/eduvxn/api_yamdb.git
+git clone https://github.com/eduvxn/yamdb_final.git
+```
+
+### В командной строке перейти в директорию infra/ и создать внутри файл с переменными .env:
+
+```
+cd yamdb_final/infra/
 ```
 
 ```
-cd api_yamdb
+nano .env
+```
+
+### Добавить в `.env` файл следующие переменные:
+    >DB_ENGINE=django.db.backends.postgresql
+    >DB_NAME= # название БД
+    >POSTGRES_USER= # имя пользователя
+    >POSTGRES_PASSWORD= # пароль для доступа к БД
+    >DB_HOST=db\
+    >DB_PORT=5432\
+    >SECRET_KEY=123 # ключ проекта
+
+### Из папки `infra/` собрать образ при помощи docker-compose
+
+```
+$ docker-compose up -d --build
+```
+
+### Применить миграции
+
+```
+$ docker-compose exec web python manage.py migrate
+```
+
+### Собрать статику
+
+```
+$ docker-compose exec web python manage.py collectstatic --no-input
+```
+### Для доступа к админке создать суперюзера
+
+```
+$ docker-compose exec web python manage.py createsuperuser
+```
+
+### Команда по наполнению БД из файла фикстур
+```
+$ docker-compose exec web python manage.py loaddata fixtures.json
 ```
 
 ### Cоздать и активировать виртуальное окружение:
